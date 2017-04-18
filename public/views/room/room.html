@@ -1,0 +1,91 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Page Title</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0">
+        <link rel="stylesheet" href="../../css/index.css">
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            $(function(){
+               var host = '{{config.host}}'; 
+               var messages = io.connect(host + '/messages');
+               var roomNum = {{room_number}};
+               var userName = '{{user.fullname}}';
+               var userPic = '{{user.profilePic}}';
+                
+               messages.on('connect', function(){
+                   console.log('established');
+                   messages.emit('joinroom', {room:roomNum, user:userName, userPic: userPic});
+               });
+ 
+               $(document).on('keyup', '.newmessage', function(e){
+                   if(e.which === 13 && $(this).val() != ''){
+                        messages.emit('newMessage', {
+                            room_number: roomNum,
+                            user: userName,
+                            userPic: userPic,
+                            message:$(this).val()
+                        });
+                       updateMessageFeed(userPic, $(this).val());
+                       $(this).val('');
+                   }
+               });
+               
+               messages.on('messagefeed', function(data){
+                   var msgs = JSON.parse(data);
+                   updateMessageFeed(msgs.userPic, msgs.message);
+               });
+               
+               function updateMessageFeed(userPic, message){
+                   var str = '<li class="clearfix"><div class="msgbox"><p class="pic"><img src="' + userPic + '"><span>' + message + '</span></p></div></li>';
+                   $(str).hide().prependTo($('.messages')).slideDown(300);
+               }
+            
+                messages.on('updateUsersList', function(data){
+                    var userlist = JSON.parse(data);
+
+                    $('.users').html('');
+                    for(var i = 0; i < userlist.length; i++){
+                        var str = '<li class="clearfix"><img src='+userlist[i].userPic+'><h5>'+userlist[i].user+'</h5></li>';
+                        $(str).prependTo($('.users'));
+                    }
+                });
+            
+            
+                setInterval(function(){
+                    messages.emit('updateList', {room:roomNum});
+                }, 10000);
+            });
+        </script>
+	</head>
+
+	<body>
+        <div class="rm-container">
+            <h1 class="rm-title">NOS Chat</h1>
+            <div class="rm-userbox clearfix">
+                <img src="{{user.profilePic}}" class="userPic">
+                <h3 class="userName">{{user.fullname}} | <a href="/logout">Logout</a> <a id="more" href="../../chatrooms/chatrooms">More Rooms</a></h3>
+            </div>
+            <div class="rm-roomname">
+                <h5><span>Chat name:</span> {{room_name}}</h5>
+            </div>
+            <div class="chatbox clearfix">
+                <div class="rm-message">
+                    <ul class="messages">
+                    </ul>
+                </div>
+                <div class="rm-users">
+                    <ul class="users">
+
+                    </ul>
+                </div>
+            </div>
+            <div class="rm-newmessage">
+                <input type="text" class="newmessage" autocomplete="off" placeholder="Type message" autofocus>
+            </div>
+        </div>
+	</body>
+</html>

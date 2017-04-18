@@ -1,0 +1,25 @@
+.hm-container {
+  width: 300px;
+  height: 180px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  font-family: 'Concert One', cursive;
+  h1 {
+    font-size: 40px;
+  }
+  a {
+    transition: $transition;
+    img {
+      width: 300px;
+    }
+  }
+  a:hover{
+    -webkit-filter: contrast(5);
+    filter: contrast(5);
+  }
+}

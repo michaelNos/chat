@@ -1,0 +1,19 @@
+.hm-container {
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+}
+
+.hm-container h1 {
+  font-size: 30px;
+}
+
+.hm-container a img {
+  width: 100px;
+}

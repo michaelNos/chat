@@ -1,0 +1,56 @@
+.cr-container{
+  @include userBox;
+  .cr-newroom{
+    .newRoom{
+      width: 350px;
+      height: 35px;
+      font-size: 20px;
+      font-family: 'Orbitron', sans-serif;
+      padding-left: 10px;
+      border: 3px solid $mainColor;
+      background-color: $backgroundColor;
+      color:$mainColor;
+      float: left;
+    }
+    #create{
+      width: 125px;
+      height: 43px;
+      border: 3px solid $mainColor;
+      background-color: $mainColor;
+      transition: $transition;
+      cursor: pointer;
+      color:$textColor;
+      font-family: 'Concert One', cursive;
+      font-size: 19px;
+      outline: 0;
+
+    }
+    #create:hover{
+      background-color: $backgroundColor;
+      color:$mainColor;
+    }
+  }
+  .cr-roomlist{
+    width: 485px;
+    border: 3px solid $mainColor;
+    .roomlist{
+      margin: 0;
+      list-style: none;
+      padding:25px;
+      a{
+        text-decoration: none;
+        li{
+          padding: 10px 0;
+          font-size: 22px;
+          color: $textColor;
+          transition: $transition;
+        }
+      }
+      a:hover{
+        li{
+          color:$mainColor;
+        }
+      }
+    }
+  }
+}
